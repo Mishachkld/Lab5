@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstring>
 
 #define STR_SIZE 1000
 
@@ -24,7 +25,5 @@ int main() {
 	makeStringUpper(myString);
 	std::cout << myString;
 
-
-	system("pause");
-	return 0;
+    return 0;
 }
