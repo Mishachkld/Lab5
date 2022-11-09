@@ -2,9 +2,7 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <vector>
-#include <valarray>
-
+#include <Windows.h>
 #define STR_SIZE 2600
 std::string FILE_PATH = R"(D:\C++Project\Lab5\text.txt)";
 
@@ -12,11 +10,11 @@ char a, b;
 int N;
 
 void outArray(std::string *myString) {
-    for (int i = 0; i < N + 1; i++) {
-        if (!myString[i].empty())
+    for (int i = 0; i < N ; i++) {
+        if (myString[i].size() != 1)
             std::cout << myString[i] << std::endl;
     }
-}
+   }
 
 bool compareByLength(std::string firstStr, std::string lastStr) {
     return firstStr.length() < lastStr.length();
@@ -34,39 +32,43 @@ std::string remover(std::string str, bool flag = false) {
 }
 
 
-std::string makeStringLower(std::basic_string<char> word) {
-    for (int i = 0; i < sizeof(word); i++) {
+std::string makeStringLower(std::string word) {
+    for (int i = 0; i <  word.size(); i++) {
+//        std::cout << word.size() << " ";
         if (isupper(word[i])) {
-
             word[i] = tolower(word[i]);
+
         }
     }
     return (std::string) word;
 }
 
 int main() {
+    std::string word;
     std::ifstream file(FILE_PATH, std::ios::in);
-//    N = 10;
-    file >> N;                    // удалить
-    std::string *myStringRaw = new std::string[STR_SIZE];
-    std::string *myStringAnswer = new std::string[N];
+    file >> a;
+    file >> b;
+    std::cout << "In this word's we have these liter: " << a << " " << b << std::endl;
+    file >> N;
+
+    std::string myString[STR_SIZE];
     int i = 0;
-    while (!file.eof()) {
-        std::string word;
+    while (!file.eof() and i < 2600) {
+
         file >> word;
         word = remover(word);
-
-        if (word.size() != 1) {
-            myStringRaw[i] = makeStringLower(word);
+        word = makeStringLower(word);
+        if (word.size() != 1 || (word.find(a) != std::string::npos) || (word.find(b) != std::string::npos)) {
+            myString[i] = word;
             i++;
         }
 
-//        std::transform(word.begin(), word.end(), myStringRaw[i].begin(), std::toupper);
+
     }
 
     file.close();
-    std::sort(myStringRaw, myStringRaw + myStringRaw->length(), compareByLength);
-    outArray(myStringRaw);
+    std::sort(myString, myString + myString->length(), compareByLength);
+    outArray(myString);
 
     return 0;
 }
