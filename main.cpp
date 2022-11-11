@@ -2,15 +2,17 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <set>
+
 
 #define STR_SIZE 2600
-std::string FILE_PATH_IN = R"(D:\C++Project\Lab5\input.txt)";
+std::string FILE_PATH_IN = R"(D:\C++Project\Lab5\text.txt)";
 std::string FILE_PATH_OUT = R"(D:\C++Project\Lab5\output.txt)";
 
 char a, b;
 int N;
 
-void outArray(std::string *myString) {
+void outArray(std::string* myString) {
     std::ofstream file(FILE_PATH_OUT, std::ios::out);
     for (int i = 0; i < N; i++) {
         if (!myString[i].empty()) {
@@ -22,19 +24,18 @@ void outArray(std::string *myString) {
 }
 
 
-bool compareByLength(const std::string &firstStr, const std::string &lastStr) {
+bool compareByLength(const std::string& firstStr, const std::string& lastStr) {
     return firstStr.length() > lastStr.length();
 
 }
 
-std::string *mySort(std::string *myStrings) {
+std::string* mySort(std::string* myStrings) {
     for (int i = 0; i < myStrings->length(); i++) {
         for (int j = i + 1; j < myStrings->length(); j++) {
             if (compareByLength(myStrings[i], myStrings[j]) and !myStrings[i].empty()
                 and !myStrings[j].empty()) {
-//                if ()
-                else
-                    std::swap(myStrings[i], myStrings[j]);
+                //                if ()
+                std::swap(myStrings[i], myStrings[j]);
 
             }
         }
@@ -42,13 +43,13 @@ std::string *mySort(std::string *myStrings) {
     return myStrings;
 }
 
-int counts(std::string *s, std::string what) {
+int counts(std::string* s, std::string what) {
     int ans = 0;
     for (int i = 0; i < (s)->length(); ++i) {
         if (s[i] == what)
-            ans++;
+            return false;
     }
-    return ans;
+    return true;
 }
 
 
@@ -75,6 +76,7 @@ std::string makeStringLower(std::basic_string<char> word) {
 }
 
 int main() {
+    setlocale(0, "");
     std::string word;
     std::ifstream file(FILE_PATH_IN, std::ios::in);
     file >> a;
@@ -82,25 +84,32 @@ int main() {
     file >> N;
     std::cout << "In word's we have these liter: " << a << " " << b << std::endl;
     std::string myString[STR_SIZE];
+    std::string resultString[STR_SIZE];
     int j = 0;
     while (!file.eof() and j < 2600) {
 
         file >> word;
         word = remover(word);
         word = makeStringLower(word);
-//        std::transform(word.begin(), word.end(), word.begin(),
-//                       tolower );
+        std::transform(word.begin(), word.end(), word.begin(),
+                       tolower);
         if ((word.length() != 1) and (word.find(a) != std::string::npos) and (word.find(b) != std::string::npos)) {
             myString[j] = word;
-//            std::cout << myString[j];
+
             j++;
         }
-
-
     }
     file.close();
     mySort(myString);
-    outArray(myString);
+    int counter = 0;
+    for (int i = 0; i < myString->length() and counter < N; i++) {
+        if (counts(resultString, myString[i])){
+            resultString[i] = myString[i];
+            counter++;
+        }
+    }
 
+
+    outArray(resultString);
     return 0;
 }
