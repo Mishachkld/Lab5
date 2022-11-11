@@ -4,27 +4,25 @@
 #include <algorithm>
 
 #define STR_SIZE 2600
-std::string FILE_PATH_IN = R"(D:\C++Project\Lab5\text.txt)";
+std::string FILE_PATH_IN = R"(D:\C++Project\Lab5\input.txt)";
 std::string FILE_PATH_OUT = R"(D:\C++Project\Lab5\output.txt)";
 
 char a, b;
 int N;
 
 void outArray(std::string *myString) {
-    std::ifstream file(FILE_PATH_OUT, std::ios::out);
+    std::ofstream file(FILE_PATH_OUT, std::ios::out);
     for (int i = 0; i < N; i++) {
         if (!myString[i].empty()) {
             std::cout << myString[i] << std::endl;
-            myString[i] += " ";
-            file >> myString[i];
+            file << myString[i] << std::endl;
         }
-        else
-            i++;
     }
+    file.close();
 }
 
 
-bool compareByLength(const std::string& firstStr, const std::string& lastStr) {
+bool compareByLength(const std::string &firstStr, const std::string &lastStr) {
     return firstStr.length() > lastStr.length();
 
 }
@@ -32,17 +30,31 @@ bool compareByLength(const std::string& firstStr, const std::string& lastStr) {
 std::string *mySort(std::string *myStrings) {
     for (int i = 0; i < myStrings->length(); i++) {
         for (int j = i + 1; j < myStrings->length(); j++) {
-            if (compareByLength(myStrings[i], myStrings[j]) and !myStrings[i].empty() and !myStrings[j].empty())
-                std::swap(myStrings[i], myStrings[j]);
+            if (compareByLength(myStrings[i], myStrings[j]) and !myStrings[i].empty()
+                and !myStrings[j].empty()) {
+//                if ()
+                else
+                    std::swap(myStrings[i], myStrings[j]);
 
+            }
         }
     }
     return myStrings;
 }
 
+int counts(std::string *s, std::string what) {
+    int ans = 0;
+    for (int i = 0; i < (s)->length(); ++i) {
+        if (s[i] == what)
+            ans++;
+    }
+    return ans;
+}
+
+
 std::string remover(std::string str) {
     std::string ret = "";
-    std::string exceptions = " ,;\n'"".?!:()[]*&^%$#@-_=+\\|/0123456789";
+    std::string exceptions = " ,;\n'"".?!:(){}[]*&^%$#@-_=+\\|/0123456789";
     for (int i = 0; i <= str.length(); i++) {
         if (exceptions.find(str[i]) == std::string::npos)
             ret += str[i];
@@ -51,12 +63,10 @@ std::string remover(std::string str) {
 }
 
 
-std::string makeStringLower(std::string word) {
-    for (int i = 0; i < word.length() ;i++) {
+std::string makeStringLower(std::basic_string<char> word) {
+    for (int i = 0; i < word.length(); i++) {
         if (isupper(word[i])) {
-            char x = word[i];
-            x = tolower(x);                         //авхыавхахыхвахыхва
-            word[i] = x;
+            word[i] = tolower(word[i]);
             std::cout << word[i] << " ";
 
         }
@@ -71,17 +81,15 @@ int main() {
     file >> b;
     file >> N;
     std::cout << "In word's we have these liter: " << a << " " << b << std::endl;
-
     std::string myString[STR_SIZE];
     int j = 0;
     while (!file.eof() and j < 2600) {
 
         file >> word;
         word = remover(word);
-//        std::cout << word << "->";
-//        std::cout << word << " ";
         word = makeStringLower(word);
-
+//        std::transform(word.begin(), word.end(), word.begin(),
+//                       tolower );
         if ((word.length() != 1) and (word.find(a) != std::string::npos) and (word.find(b) != std::string::npos)) {
             myString[j] = word;
 //            std::cout << myString[j];
@@ -91,7 +99,6 @@ int main() {
 
     }
     file.close();
-//    std::sort(std::begin(myString), std::end(myString), compareByLength);
     mySort(myString);
     outArray(myString);
 
