@@ -2,12 +2,11 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <set>
 
 
 #define STR_SIZE 2600
-std::string FILE_PATH_IN = R"(D:\C++Project\Lab5\text.txt)";
-std::string FILE_PATH_OUT = R"(D:\C++Project\Lab5\output.txt)";
+std::string FILE_PATH_IN = "input.txt";
+std::string FILE_PATH_OUT = "output.txt";
 
 char a, b;
 int N;
@@ -16,7 +15,6 @@ void outArray(std::string* myString) {
     std::ofstream file(FILE_PATH_OUT, std::ios::out);
     for (int i = 0; i < N; i++) {
         if (!myString[i].empty()) {
-            std::cout << myString[i] << std::endl;
             file << myString[i] << std::endl;
         }
     }
@@ -34,9 +32,7 @@ std::string* mySort(std::string* myStrings) {
         for (int j = i + 1; j < myStrings->length(); j++) {
             if (compareByLength(myStrings[i], myStrings[j]) and !myStrings[i].empty()
                 and !myStrings[j].empty()) {
-                //                if ()
                 std::swap(myStrings[i], myStrings[j]);
-
             }
         }
     }
@@ -44,7 +40,6 @@ std::string* mySort(std::string* myStrings) {
 }
 
 int counts(std::string* s, std::string what) {
-    int ans = 0;
     for (int i = 0; i < (s)->length(); ++i) {
         if (s[i] == what)
             return false;
@@ -90,9 +85,9 @@ int main() {
 
         file >> word;
         word = remover(word);
-        word = makeStringLower(word);
+        //word = makeStringLower(word);
         std::transform(word.begin(), word.end(), word.begin(),
-                       tolower);
+            tolower);
         if ((word.length() != 1) and (word.find(a) != std::string::npos) and (word.find(b) != std::string::npos)) {
             myString[j] = word;
 
@@ -103,7 +98,7 @@ int main() {
     mySort(myString);
     int counter = 0;
     for (int i = 0; i < myString->length() and counter < N; i++) {
-        if (counts(resultString, myString[i])){
+        if (counts(resultString, myString[i])) {
             resultString[i] = myString[i];
             counter++;
         }
